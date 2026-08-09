@@ -1,5 +1,5 @@
-const CACHE = 'db-analisis-v2';
-const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
+const CACHE = 'db-analisis-v3';
+const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png', '/escudo.jpg', '/cancha.jpg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(

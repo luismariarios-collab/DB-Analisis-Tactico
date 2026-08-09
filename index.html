@@ -776,13 +776,15 @@ async function renderHist(){
     const data=await sbFetch('partidos?select=*&order=created_at.desc&limit=50');
     if(!data||!data.length){list.innerHTML='<p style="color:var(--mut);text-align:center;padding:2rem">Sin partidos guardados.</p>';return;}
     list.innerHTML=data.map(p=>`
-      <div class="hist-item" onclick='loadP(${JSON.stringify(p).replace(/'/g,"\'")})''>
+      <div class="hist-item" onclick="loadPById(${p.id})"'>
         <div><div class="hist-vs">C.A.P. vs ${p.rival}</div><div class="hist-fecha">${p.fecha||'—'}</div></div>
         <div class="hbadge">${p.condicion}</div>
         <button onclick="event.stopPropagation();delP(${p.id})" style="background:transparent;border:none;color:var(--mut);cursor:pointer;font-size:18px;padding:0 4px">✕</button>
       </div>`).join('');
   }catch(e){list.innerHTML='<p style="color:var(--red);text-align:center;padding:2rem">Error: '+e.message+'</p>';}
 }
+let _histData=[];
+function loadPById(id){const p=_histData.find(x=>x.id===id);if(p)loadP(p);}
 function loadP(p){
   document.getElementById('rival').value=p.rival==='(sin nombre)'?'':p.rival;
   document.getElementById('condicion').value=p.condicion;

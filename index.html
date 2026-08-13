@@ -201,9 +201,10 @@ select.fi{cursor:pointer}
 .srow-multi{margin-bottom:10px}
 .slbl-multi{font-size:11px;color:var(--mut);margin-bottom:5px}
 .mchips{display:flex;flex-wrap:wrap;gap:4px}
-.mchip{background:var(--bg);border:1px solid var(--brd);border-radius:16px;padding:3px 9px;font-size:11px;color:var(--mut);cursor:pointer;transition:all .12s;user-select:none}
+.mchip{background:var(--bg);border:1px solid var(--brd);border-radius:16px;padding:7px 13px;font-size:12px;color:var(--mut);cursor:pointer;transition:all .12s;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:36px;display:inline-flex;align-items:center;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none}
 .mchip.on{background:var(--gold);border-color:var(--gold);color:#000;font-weight:700}
 .mchip:hover:not(.on){border-color:var(--brd2);color:var(--txt)}
+.mchip:active{transform:scale(.95)}
 
 .plantel-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--brd)}
 .plantel-row:last-child{border-bottom:none}
@@ -215,6 +216,14 @@ select.fi{cursor:pointer}
 .plantel-edit:hover{color:var(--gold);border-color:var(--gold-dim)}
 .plantel-del{background:transparent;border:1px solid transparent;color:var(--mut2);font-size:16px;cursor:pointer;padding:0 4px;transition:color .2s}
 .plantel-del:hover{color:var(--red)}
+
+.drawing-mode #draw-canvas{pointer-events:all;cursor:crosshair}
+.drawing-mode .jugador-pin{pointer-events:none}
+#btn-draw.active{background:var(--gold);color:#000;border-color:var(--gold)}
+
+.drawing-mode #draw-canvas{pointer-events:all;cursor:crosshair}
+.drawing-mode .jugador-pin{pointer-events:none}
+#btn-draw.active{background:var(--gold);color:#000;border-color:var(--gold)}
 </style>
 </head>
 <body>
@@ -429,6 +438,7 @@ select.fi{cursor:pointer}
             <path d="M 420,138 A 50,50 0 0,0 420,202" fill="none" stroke="white" stroke-width="2"/>
           </svg>
           <div id="pines-container"></div>
+          <svg id="draw-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:6" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
         <div class="cancha-legend">
           <div class="cleg"><div class="cleg-dot"></div> Titular</div>
@@ -439,6 +449,8 @@ select.fi{cursor:pointer}
           <button class="ibtn" onclick="form442()">4-4-2</button>
           <button class="ibtn" onclick="form433()">4-3-3</button>
           <button class="ibtn" onclick="form4231()">4-2-3-1</button>
+          <button class="ibtn" id="btn-draw" onclick="toggleDraw()">&#9997; Dibujar</button>
+          <button class="ibtn" onclick="clearDraw()" style="color:var(--red);border-color:var(--red)">Borrar trazos</button>
         </div>
       </div>
     </div>
@@ -685,7 +697,20 @@ var TODOS=TIT.concat(SUP);
 var SEL_IDS=['ff-pd','ff-pi','fl-pi','fl-pd'];
 var MULTI_IDS=['ff-va','ff-ca','ff-de','fl-at','fl-de','cf-ma','cf-a1','cf-a2','cl-ma','cl-ba','cl-ar'];
 var filtro=new Set();
-function initApp(){cargarPlantel();document.getElementById('fecha').value=new Date().toISOString().split('T')[0];initCancha();}
+function initApp(){
+  // Usar plantel hardcodeado inmediatamente como fallback
+  if(TODOS.length === 0){
+    TIT=[{n:1,v:'Isidoro'},{n:2,v:'Ramos'},{n:3,v:'Petronio'},{n:4,v:'Tavella'},{n:5,v:'Patiño F.'},{n:6,v:'Contreras'},{n:7,v:'Pajón'},{n:8,v:'Manuel N.'},{n:9,v:'Fernandez'},{n:10,v:'Romero'},{n:11,v:'Garcia'}];
+    SUP=[{n:12,v:'Arrieta'},{n:13,v:'Oliva'},{n:14,v:'Lopardo'},{n:15,v:'Banega N.'},{n:16,v:'Andrada'},{n:17,v:'Patiño T.'},{n:18,v:'Leonardi'}];
+    TODOS=TIT.concat(SUP);
+  }
+  document.getElementById('fecha').value=new Date().toISOString().split('T')[0];
+  buildGrid();
+  selTit();
+  initCancha();
+  // Luego actualizar desde Supabase en background
+  cargarPlantel();
+}
 function buildGrid(){
   var g=document.getElementById('jgrid');g.innerHTML='';
   TODOS.forEach(function(j){
@@ -715,12 +740,15 @@ function fillSelects(){
     var prevSel=getMultiSel(id);
     cont.innerHTML='';
     lista.forEach(function(j){
-      var c=document.createElement('div');
-      c.className='mchip'+(prevSel.indexOf(j.n)>=0?' on':'');
-      c.textContent=j.n+' - '+j.v;
-      c.dataset.n=j.n;
-      c.onclick=function(){c.classList.toggle('on');};
-      cont.appendChild(c);
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='mchip'+(prevSel.indexOf(j.n)>=0?' on':'');
+      btn.textContent=j.n+' - '+j.v;
+      btn.dataset.n=String(j.n);
+      btn.onclick=function(){
+        this.classList.toggle('on');
+      };
+      cont.appendChild(btn);
     });
   });
 }
@@ -1003,18 +1031,27 @@ var plantelData = [];
 function cargarPlantel(){
   sb('plantel?select=*&order=numero.asc&activo=eq.true')
   .then(function(data){
-    plantelData = data || [];
-    // Actualizar TODOS y TIT/SUP globales
+    if(!data || data.length === 0) return; // mantener fallback si Supabase falla
+    plantelData = data;
     actualizarGlobalesPlantel();
-    // Si estamos en config, renderizar
     if(document.getElementById('config-screen').style.display !== 'none'){
       renderCfgPlantel();
     }
-    // Refrescar chips y selects
+    // Refrescar UI con datos de Supabase
+    var filtroActual = Array.from(filtro);
     buildGrid();
+    // Restaurar filtro anterior
+    if(filtroActual.length > 0){
+      filtro = new Set(filtroActual.filter(function(n){
+        return TODOS.find(function(j){ return j.n === n; });
+      }));
+    } else {
+      filtro = new Set(TIT.map(function(j){ return j.n; }));
+    }
+    syncGrid();
     fillSelects();
     renderPines();
-  }).catch(function(e){ console.error('Error plantel:', e); });
+  }).catch(function(e){ console.error('Error cargando plantel:', e); });
 }
 
 function actualizarGlobalesPlantel(){
@@ -1109,6 +1146,110 @@ function eliminarJugador(id, nombre){
   sb('plantel?id=eq.' + id, { method: 'PATCH', prefer: 'return=minimal', body: JSON.stringify({ activo: false }) })
   .then(function(){ cargarPlantel(); })
   .catch(function(e){ alert('Error: ' + e.message); });
+}
+
+
+/* ─── DIBUJO EN CANCHA ─── */
+var isDrawing = false;
+var drawMode = false;
+var currentPath = null;
+var drawPaths = [];
+var lastX = 0, lastY = 0;
+
+function toggleDraw(){
+  drawMode = !drawMode;
+  var cont = document.getElementById('cancha-container');
+  var btn = document.getElementById('btn-draw');
+  if(drawMode){
+    cont.classList.add('drawing-mode');
+    btn.classList.add('active');
+    btn.textContent = '✏ Modo activo';
+    setupDrawEvents();
+  } else {
+    cont.classList.remove('drawing-mode');
+    btn.classList.remove('active');
+    btn.textContent = '✏ Dibujar';
+    removeDrawEvents();
+  }
+}
+
+function clearDraw(){
+  drawPaths = [];
+  var svg = document.getElementById('draw-canvas');
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+}
+
+function getSVGPoint(e, svg){
+  var rect = svg.getBoundingClientRect();
+  var src = e.touches ? e.touches[0] : e;
+  return {
+    x: ((src.clientX - rect.left) / rect.width) * 100,
+    y: ((src.clientY - rect.top) / rect.height) * 100
+  };
+}
+
+function setupDrawEvents(){
+  var svg = document.getElementById('draw-canvas');
+  svg.addEventListener('mousedown', drawStart);
+  svg.addEventListener('mousemove', drawMove);
+  svg.addEventListener('mouseup', drawEnd);
+  svg.addEventListener('touchstart', drawStart, {passive:false});
+  svg.addEventListener('touchmove', drawMove, {passive:false});
+  svg.addEventListener('touchend', drawEnd);
+}
+
+function removeDrawEvents(){
+  var svg = document.getElementById('draw-canvas');
+  svg.removeEventListener('mousedown', drawStart);
+  svg.removeEventListener('mousemove', drawMove);
+  svg.removeEventListener('mouseup', drawEnd);
+  svg.removeEventListener('touchstart', drawStart);
+  svg.removeEventListener('touchmove', drawMove);
+  svg.removeEventListener('touchend', drawEnd);
+}
+
+function drawStart(e){
+  e.preventDefault();
+  isDrawing = true;
+  var svg = document.getElementById('draw-canvas');
+  var pt = getSVGPoint(e, svg);
+  currentPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  currentPath.setAttribute('fill','none');
+  currentPath.setAttribute('stroke','#e8c96a');
+  currentPath.setAttribute('stroke-width','1.5');
+  currentPath.setAttribute('stroke-linecap','round');
+  currentPath.setAttribute('stroke-linejoin','round');
+  currentPath.setAttribute('vector-effect','non-scaling-stroke');
+  currentPath.setAttribute('d','M '+pt.x+' '+pt.y);
+  svg.appendChild(currentPath);
+  lastX = pt.x; lastY = pt.y;
+}
+
+function drawMove(e){
+  if(!isDrawing || !currentPath) return;
+  e.preventDefault();
+  var svg = document.getElementById('draw-canvas');
+  var pt = getSVGPoint(e, svg);
+  var d = currentPath.getAttribute('d');
+  currentPath.setAttribute('d', d + ' L '+pt.x+' '+pt.y);
+  lastX = pt.x; lastY = pt.y;
+}
+
+function drawEnd(e){
+  if(!isDrawing) return;
+  isDrawing = false;
+  if(currentPath){
+    // Agregar flecha al final del trazo
+    var svg = document.getElementById('draw-canvas');
+    var arrow = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    arrow.setAttribute('cx', lastX);
+    arrow.setAttribute('cy', lastY);
+    arrow.setAttribute('r', '1.5');
+    arrow.setAttribute('fill','#e8c96a');
+    svg.appendChild(arrow);
+    drawPaths.push(currentPath);
+    currentPath = null;
+  }
 }
 
 loadCfg();

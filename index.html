@@ -896,6 +896,30 @@ function delP(id){
   if(!confirm('Eliminar este partido?'))return;
   sb('partidos?id=eq.'+id,{method:'DELETE'}).then(function(){renderHist();}).catch(function(){renderHist();});
 }
+
+function mostrarResumenPP(){
+  var form = getForm();
+  var rows = '';
+  var labelsS = {'ff-pd':'Patea corner (der)','ff-pi':'Patea corner (izq)','fl-pi':'Patea TL (izq)','fl-pd':'Patea TL (der)'};
+  var labelsM = {'ff-va':'Van al area (corner)','ff-ca':'Cabecea (corner)','ff-de':'Defienden (corner)','fl-at':'Atacan area (TL)','fl-de':'Defienden (TL)','cf-ma':'Marcan (corner)','cf-a1':'Quedan arriba 1','cf-a2':'Quedan arriba 2','cl-ma':'Marcan (TL)','cl-ba':'Barrera (TL)','cl-ar':'Quedan arriba (TL)'};
+  Object.keys(labelsS).forEach(function(id){
+    if(form.slots[id]){
+      rows += '<tr><td style="padding:5px 8px;border-bottom:1px solid var(--brd);color:var(--mut);font-size:11px">'+labelsS[id]+'</td>'+
+        '<td style="padding:5px 8px;border-bottom:1px solid var(--brd);color:var(--gold2);font-size:11px;font-weight:600">'+form.slots[id].v+'</td></tr>';
+    }
+  });
+  Object.keys(labelsM).forEach(function(id){
+    if(form.slots[id] && form.slots[id].length > 0){
+      var names = form.slots[id].map(function(x){ return x.v; }).join(', ');
+      rows += '<tr><td style="padding:5px 8px;border-bottom:1px solid var(--brd);color:var(--mut);font-size:11px">'+labelsM[id]+'</td>'+
+        '<td style="padding:5px 8px;border-bottom:1px solid var(--brd);color:var(--gold2);font-size:11px;font-weight:600">'+names+'</td></tr>';
+    }
+  });
+  document.getElementById('stats-resumen').innerHTML = rows ?
+    '<table style="width:100%;border-collapse:collapse"><tbody>'+rows+'</tbody></table>' :
+    '<p style="color:var(--mut);grid-column:1/-1;text-align:center;padding:1rem;font-size:12px">Carga un partido para ver el resumen.</p>';
+}
+
 function loadStats(){
   if(!partidoId){
     // Mostrar resumen de pelotas paradas aunque no haya partido guardado
@@ -1202,9 +1226,10 @@ function clearDraw(){
 function getSVGPoint(e, svg){
   var rect = svg.getBoundingClientRect();
   var src = e.touches ? e.touches[0] : e;
+  // Coordenadas en % del contenedor (0-100)
   return {
-    x: ((src.clientX - rect.left) / rect.width) * 100,
-    y: ((src.clientY - rect.top) / rect.height) * 100
+    x: Math.round(((src.clientX - rect.left) / rect.width) * 1000) / 10,
+    y: Math.round(((src.clientY - rect.top) / rect.height) * 1000) / 10
   };
 }
 
@@ -1236,7 +1261,7 @@ function drawStart(e){
   currentPath = document.createElementNS('http://www.w3.org/2000/svg','path');
   currentPath.setAttribute('fill','none');
   currentPath.setAttribute('stroke','#e8c96a');
-  currentPath.setAttribute('stroke-width','2');
+  currentPath.setAttribute('stroke-width','0.8');
   currentPath.setAttribute('stroke-linecap','round');
   currentPath.setAttribute('stroke-linejoin','round');
   currentPath.setAttribute('vector-effect','non-scaling-stroke');
@@ -1264,7 +1289,7 @@ function drawEnd(e){
     var arrow = document.createElementNS('http://www.w3.org/2000/svg','circle');
     arrow.setAttribute('cx', lastX);
     arrow.setAttribute('cy', lastY);
-    arrow.setAttribute('r', '1.5');
+    arrow.setAttribute('r', '0.8');
     arrow.setAttribute('fill','#e8c96a');
     svg.appendChild(arrow);
     drawPaths.push(currentPath);

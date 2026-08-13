@@ -104,7 +104,7 @@ select.fi{cursor:pointer}
 .zinp{background:var(--bg);border:1px solid var(--brd);border-radius:6px;color:var(--txt);font-size:12px;padding:5px 0;width:50px;outline:none;text-align:center}
 .zinp:focus{border-color:var(--gold)}
 .cancha-wrap{background:var(--surf);border:1px solid var(--brd);border-radius:12px;padding:1rem;margin-bottom:.85rem}
-.cancha-container{position:relative;width:100%;max-width:500px;margin:0 auto}
+.cancha-container{position:relative;width:100%;max-width:500px;margin:0 auto;overflow:hidden}
 .cancha-svg{width:100%;border-radius:8px;display:block}
 .jugador-pin{position:absolute;width:32px;height:32px;border-radius:50%;background:var(--gold);border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#000;cursor:grab;user-select:none;transform:translate(-50%,-50%);box-shadow:0 2px 8px rgba(0,0,0,.5);touch-action:none;z-index:5}
 .jugador-pin:active{cursor:grabbing;z-index:10}
@@ -438,7 +438,7 @@ select.fi{cursor:pointer}
             <path d="M 420,138 A 50,50 0 0,0 420,202" fill="none" stroke="white" stroke-width="2"/>
           </svg>
           <div id="pines-container"></div>
-          <svg id="draw-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:6" xmlns="http://www.w3.org/2000/svg"></svg>
+          <svg id="draw-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:8;border-radius:8px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
         </div>
         <div class="cancha-legend">
           <div class="cleg"><div class="cleg-dot"></div> Titular</div>
@@ -738,24 +738,44 @@ function fillSelects(){
   MULTI_IDS.forEach(function(id){
     var cont=document.getElementById(id);if(!cont)return;
     var prevSel=getMultiSel(id);
-    cont.innerHTML='';
+    // Remover listener anterior para evitar duplicados
+    var newCont=cont.cloneNode(false);
+    cont.parentNode.replaceChild(newCont,cont);
+    cont=newCont;
     lista.forEach(function(j){
       var btn=document.createElement('button');
       btn.type='button';
       btn.className='mchip'+(prevSel.indexOf(j.n)>=0?' on':'');
       btn.textContent=j.n+' - '+j.v;
-      btn.dataset.n=String(j.n);
-      btn.onclick=function(){
-        this.classList.toggle('on');
-      };
+      btn.setAttribute('data-n',String(j.n));
       cont.appendChild(btn);
+    });
+    // Event delegation en el contenedor — más robusto en mobile
+    cont.addEventListener('click',function(e){
+      var t=e.target;
+      if(t.classList.contains('mchip')){
+        t.classList.toggle('on');
+      }
+    });
+    cont.addEventListener('touchend',function(e){
+      var t=e.target;
+      if(t.classList.contains('mchip')){
+        e.preventDefault();
+        t.classList.toggle('on');
+      }
     });
   });
 }
 function getMultiSel(id){
-  var cont=document.getElementById(id);if(!cont)return[];
+  var cont=document.getElementById(id);
+  // buscar por id o por el cloneNode que pudo reemplazarlo
+  if(!cont) cont=document.querySelector('[id="'+id+'"]');
+  if(!cont)return[];
   var result=[];
-  cont.querySelectorAll('.mchip.on').forEach(function(c){result.push(parseInt(c.dataset.n));});
+  cont.querySelectorAll('.mchip.on').forEach(function(c){
+    var n=parseInt(c.getAttribute('data-n'));
+    if(!isNaN(n))result.push(n);
+  });
   return result;
 }
 function toggleSec(id){document.getElementById('body-'+id).classList.toggle('open');document.getElementById('ch-'+id).classList.toggle('open');}
@@ -1216,7 +1236,7 @@ function drawStart(e){
   currentPath = document.createElementNS('http://www.w3.org/2000/svg','path');
   currentPath.setAttribute('fill','none');
   currentPath.setAttribute('stroke','#e8c96a');
-  currentPath.setAttribute('stroke-width','1.5');
+  currentPath.setAttribute('stroke-width','2');
   currentPath.setAttribute('stroke-linecap','round');
   currentPath.setAttribute('stroke-linejoin','round');
   currentPath.setAttribute('vector-effect','non-scaling-stroke');

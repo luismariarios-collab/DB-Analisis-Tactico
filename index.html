@@ -201,10 +201,9 @@ select.fi{cursor:pointer}
 .srow-multi{margin-bottom:10px}
 .slbl-multi{font-size:11px;color:var(--mut);margin-bottom:5px}
 .mchips{display:flex;flex-wrap:wrap;gap:4px}
-.mchip{background:var(--bg);border:1px solid var(--brd);border-radius:16px;padding:7px 13px;font-size:12px;color:var(--mut);cursor:pointer;transition:all .12s;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:36px;display:inline-flex;align-items:center;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none}
-.mchip.on{background:var(--gold);border-color:var(--gold);color:#000;font-weight:700}
-.mchip:hover:not(.on){border-color:var(--brd2);color:var(--txt)}
-.mchip:active{transform:scale(.95)}
+.mchip{background:var(--bg);border:1px solid var(--brd2);border-radius:20px;padding:8px 14px;font-size:12px;color:var(--txt);cursor:pointer;transition:background .1s,border-color .1s,color .1s;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:40px;display:inline-flex;align-items:center;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;margin:2px}
+.mchip.on{background:var(--gold)!important;border-color:var(--gold)!important;color:#000!important;font-weight:700}
+.mchip:active{opacity:.7}
 
 .plantel-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--brd)}
 .plantel-row:last-child{border-bottom:none}
@@ -224,6 +223,11 @@ select.fi{cursor:pointer}
 .drawing-mode #draw-canvas{pointer-events:all;cursor:crosshair}
 .drawing-mode .jugador-pin{pointer-events:none}
 #btn-draw.active{background:var(--gold);color:#000;border-color:var(--gold)}
+
+.tl-contra-item{display:flex;align-items:center;gap:6px;padding:4px 6px;background:var(--surf3);border-radius:6px;margin-bottom:4px;font-size:11px}
+.tl-contra-item .tl-tipo{flex:1;color:var(--txt)}
+.tl-contra-item .tl-jug{color:var(--mut)}
+.tl-contra-item button{background:transparent;border:none;color:var(--mut2);cursor:pointer;font-size:13px;padding:0 2px}
 </style>
 </head>
 <body>
@@ -342,15 +346,15 @@ select.fi{cursor:pointer}
               <div class="srow"><div class="slbl">Patea (izquierda)</div><select class="ssel" id="ff-pi"></select></div>
               <div class="srow-multi">
                 <div class="slbl-multi">Van al area</div>
-                <div class="mchips" id="ff-va"></div>
+                <div class="mchips" id="ff-va"><button type="button" class="mchip" data-slot="ff-va" data-n="1" onclick="toggleChip(this)">1 - Isidoro</button><button type="button" class="mchip" data-slot="ff-va" data-n="2" onclick="toggleChip(this)">2 - Ramos</button><button type="button" class="mchip" data-slot="ff-va" data-n="3" onclick="toggleChip(this)">3 - Petronio</button><button type="button" class="mchip" data-slot="ff-va" data-n="4" onclick="toggleChip(this)">4 - Tavella</button><button type="button" class="mchip" data-slot="ff-va" data-n="5" onclick="toggleChip(this)">5 - Patiño F.</button><button type="button" class="mchip" data-slot="ff-va" data-n="6" onclick="toggleChip(this)">6 - Contreras</button><button type="button" class="mchip" data-slot="ff-va" data-n="7" onclick="toggleChip(this)">7 - Pajón</button><button type="button" class="mchip" data-slot="ff-va" data-n="8" onclick="toggleChip(this)">8 - Manuel N.</button><button type="button" class="mchip" data-slot="ff-va" data-n="9" onclick="toggleChip(this)">9 - Fernandez</button><button type="button" class="mchip" data-slot="ff-va" data-n="10" onclick="toggleChip(this)">10 - Romero</button><button type="button" class="mchip" data-slot="ff-va" data-n="11" onclick="toggleChip(this)">11 - Garcia</button><button type="button" class="mchip" data-slot="ff-va" data-n="12" onclick="toggleChip(this)">12 - Arrieta</button><button type="button" class="mchip" data-slot="ff-va" data-n="13" onclick="toggleChip(this)">13 - Oliva</button><button type="button" class="mchip" data-slot="ff-va" data-n="14" onclick="toggleChip(this)">14 - Lopardo</button><button type="button" class="mchip" data-slot="ff-va" data-n="15" onclick="toggleChip(this)">15 - Banega N.</button><button type="button" class="mchip" data-slot="ff-va" data-n="16" onclick="toggleChip(this)">16 - Andrada</button><button type="button" class="mchip" data-slot="ff-va" data-n="17" onclick="toggleChip(this)">17 - Patiño T.</button><button type="button" class="mchip" data-slot="ff-va" data-n="18" onclick="toggleChip(this)">18 - Leonardi</button></div>
               </div>
               <div class="srow-multi">
                 <div class="slbl-multi">Cabecea</div>
-                <div class="mchips" id="ff-ca"></div>
+                <div class="mchips" id="ff-ca"><button type="button" class="mchip" data-slot="ff-ca" data-n="1" onclick="toggleChip(this)">1 - Isidoro</button><button type="button" class="mchip" data-slot="ff-ca" data-n="2" onclick="toggleChip(this)">2 - Ramos</button><button type="button" class="mchip" data-slot="ff-ca" data-n="3" onclick="toggleChip(this)">3 - Petronio</button><button type="button" class="mchip" data-slot="ff-ca" data-n="4" onclick="toggleChip(this)">4 - Tavella</button><button type="button" class="mchip" data-slot="ff-ca" data-n="5" onclick="toggleChip(this)">5 - Patiño F.</button><button type="button" class="mchip" data-slot="ff-ca" data-n="6" onclick="toggleChip(this)">6 - Contreras</button><button type="button" class="mchip" data-slot="ff-ca" data-n="7" onclick="toggleChip(this)">7 - Pajón</button><button type="button" class="mchip" data-slot="ff-ca" data-n="8" onclick="toggleChip(this)">8 - Manuel N.</button><button type="button" class="mchip" data-slot="ff-ca" data-n="9" onclick="toggleChip(this)">9 - Fernandez</button><button type="button" class="mchip" data-slot="ff-ca" data-n="10" onclick="toggleChip(this)">10 - Romero</button><button type="button" class="mchip" data-slot="ff-ca" data-n="11" onclick="toggleChip(this)">11 - Garcia</button><button type="button" class="mchip" data-slot="ff-ca" data-n="12" onclick="toggleChip(this)">12 - Arrieta</button><button type="button" class="mchip" data-slot="ff-ca" data-n="13" onclick="toggleChip(this)">13 - Oliva</button><button type="button" class="mchip" data-slot="ff-ca" data-n="14" onclick="toggleChip(this)">14 - Lopardo</button><button type="button" class="mchip" data-slot="ff-ca" data-n="15" onclick="toggleChip(this)">15 - Banega N.</button><button type="button" class="mchip" data-slot="ff-ca" data-n="16" onclick="toggleChip(this)">16 - Andrada</button><button type="button" class="mchip" data-slot="ff-ca" data-n="17" onclick="toggleChip(this)">17 - Patiño T.</button><button type="button" class="mchip" data-slot="ff-ca" data-n="18" onclick="toggleChip(this)">18 - Leonardi</button></div>
               </div>
               <div class="srow-multi">
                 <div class="slbl-multi">Defienden</div>
-                <div class="mchips" id="ff-de"></div>
+                <div class="mchips" id="ff-de"><button type="button" class="mchip" data-slot="ff-de" data-n="1" onclick="toggleChip(this)">1 - Isidoro</button><button type="button" class="mchip" data-slot="ff-de" data-n="2" onclick="toggleChip(this)">2 - Ramos</button><button type="button" class="mchip" data-slot="ff-de" data-n="3" onclick="toggleChip(this)">3 - Petronio</button><button type="button" class="mchip" data-slot="ff-de" data-n="4" onclick="toggleChip(this)">4 - Tavella</button><button type="button" class="mchip" data-slot="ff-de" data-n="5" onclick="toggleChip(this)">5 - Patiño F.</button><button type="button" class="mchip" data-slot="ff-de" data-n="6" onclick="toggleChip(this)">6 - Contreras</button><button type="button" class="mchip" data-slot="ff-de" data-n="7" onclick="toggleChip(this)">7 - Pajón</button><button type="button" class="mchip" data-slot="ff-de" data-n="8" onclick="toggleChip(this)">8 - Manuel N.</button><button type="button" class="mchip" data-slot="ff-de" data-n="9" onclick="toggleChip(this)">9 - Fernandez</button><button type="button" class="mchip" data-slot="ff-de" data-n="10" onclick="toggleChip(this)">10 - Romero</button><button type="button" class="mchip" data-slot="ff-de" data-n="11" onclick="toggleChip(this)">11 - Garcia</button><button type="button" class="mchip" data-slot="ff-de" data-n="12" onclick="toggleChip(this)">12 - Arrieta</button><button type="button" class="mchip" data-slot="ff-de" data-n="13" onclick="toggleChip(this)">13 - Oliva</button><button type="button" class="mchip" data-slot="ff-de" data-n="14" onclick="toggleChip(this)">14 - Lopardo</button><button type="button" class="mchip" data-slot="ff-de" data-n="15" onclick="toggleChip(this)">15 - Banega N.</button><button type="button" class="mchip" data-slot="ff-de" data-n="16" onclick="toggleChip(this)">16 - Andrada</button><button type="button" class="mchip" data-slot="ff-de" data-n="17" onclick="toggleChip(this)">17 - Patiño T.</button><button type="button" class="mchip" data-slot="ff-de" data-n="18" onclick="toggleChip(this)">18 - Leonardi</button></div>
               </div>
             </div>
             <div class="sub">
@@ -359,11 +363,11 @@ select.fi{cursor:pointer}
               <div class="srow"><div class="slbl">Patea (derecha)</div><select class="ssel" id="fl-pd"></select></div>
               <div class="srow-multi">
                 <div class="slbl-multi">Atacan el area</div>
-                <div class="mchips" id="fl-at"></div>
+                <div class="mchips" id="fl-at"><button type="button" class="mchip" data-slot="fl-at" data-n="1" onclick="toggleChip(this)">1 - Isidoro</button><button type="button" class="mchip" data-slot="fl-at" data-n="2" onclick="toggleChip(this)">2 - Ramos</button><button type="button" class="mchip" data-slot="fl-at" data-n="3" onclick="toggleChip(this)">3 - Petronio</button><button type="button" class="mchip" data-slot="fl-at" data-n="4" onclick="toggleChip(this)">4 - Tavella</button><button type="button" class="mchip" data-slot="fl-at" data-n="5" onclick="toggleChip(this)">5 - Patiño F.</button><button type="button" class="mchip" data-slot="fl-at" data-n="6" onclick="toggleChip(this)">6 - Contreras</button><button type="button" class="mchip" data-slot="fl-at" data-n="7" onclick="toggleChip(this)">7 - Pajón</button><button type="button" class="mchip" data-slot="fl-at" data-n="8" onclick="toggleChip(this)">8 - Manuel N.</button><button type="button" class="mchip" data-slot="fl-at" data-n="9" onclick="toggleChip(this)">9 - Fernandez</button><button type="button" class="mchip" data-slot="fl-at" data-n="10" onclick="toggleChip(this)">10 - Romero</button><button type="button" class="mchip" data-slot="fl-at" data-n="11" onclick="toggleChip(this)">11 - Garcia</button><button type="button" class="mchip" data-slot="fl-at" data-n="12" onclick="toggleChip(this)">12 - Arrieta</button><button type="button" class="mchip" data-slot="fl-at" data-n="13" onclick="toggleChip(this)">13 - Oliva</button><button type="button" class="mchip" data-slot="fl-at" data-n="14" onclick="toggleChip(this)">14 - Lopardo</button><button type="button" class="mchip" data-slot="fl-at" data-n="15" onclick="toggleChip(this)">15 - Banega N.</button><button type="button" class="mchip" data-slot="fl-at" data-n="16" onclick="toggleChip(this)">16 - Andrada</button><button type="button" class="mchip" data-slot="fl-at" data-n="17" onclick="toggleChip(this)">17 - Patiño T.</button><button type="button" class="mchip" data-slot="fl-at" data-n="18" onclick="toggleChip(this)">18 - Leonardi</button></div>
               </div>
               <div class="srow-multi">
                 <div class="slbl-multi">Defienden</div>
-                <div class="mchips" id="fl-de"></div>
+                <div class="mchips" id="fl-de"><button type="button" class="mchip" data-slot="fl-de" data-n="1" onclick="toggleChip(this)">1 - Isidoro</button><button type="button" class="mchip" data-slot="fl-de" data-n="2" onclick="toggleChip(this)">2 - Ramos</button><button type="button" class="mchip" data-slot="fl-de" data-n="3" onclick="toggleChip(this)">3 - Petronio</button><button type="button" class="mchip" data-slot="fl-de" data-n="4" onclick="toggleChip(this)">4 - Tavella</button><button type="button" class="mchip" data-slot="fl-de" data-n="5" onclick="toggleChip(this)">5 - Patiño F.</button><button type="button" class="mchip" data-slot="fl-de" data-n="6" onclick="toggleChip(this)">6 - Contreras</button><button type="button" class="mchip" data-slot="fl-de" data-n="7" onclick="toggleChip(this)">7 - Pajón</button><button type="button" class="mchip" data-slot="fl-de" data-n="8" onclick="toggleChip(this)">8 - Manuel N.</button><button type="button" class="mchip" data-slot="fl-de" data-n="9" onclick="toggleChip(this)">9 - Fernandez</button><button type="button" class="mchip" data-slot="fl-de" data-n="10" onclick="toggleChip(this)">10 - Romero</button><button type="button" class="mchip" data-slot="fl-de" data-n="11" onclick="toggleChip(this)">11 - Garcia</button><button type="button" class="mchip" data-slot="fl-de" data-n="12" onclick="toggleChip(this)">12 - Arrieta</button><button type="button" class="mchip" data-slot="fl-de" data-n="13" onclick="toggleChip(this)">13 - Oliva</button><button type="button" class="mchip" data-slot="fl-de" data-n="14" onclick="toggleChip(this)">14 - Lopardo</button><button type="button" class="mchip" data-slot="fl-de" data-n="15" onclick="toggleChip(this)">15 - Banega N.</button><button type="button" class="mchip" data-slot="fl-de" data-n="16" onclick="toggleChip(this)">16 - Andrada</button><button type="button" class="mchip" data-slot="fl-de" data-n="17" onclick="toggleChip(this)">17 - Patiño T.</button><button type="button" class="mchip" data-slot="fl-de" data-n="18" onclick="toggleChip(this)">18 - Leonardi</button></div>
               </div>
             </div>
           </div>
@@ -381,10 +385,10 @@ select.fi{cursor:pointer}
               <div class="stitle">Corner</div>
               <div class="srow-multi">
                 <div class="slbl-multi">Marcan</div>
-                <div class="mchips" id="cf-ma"></div>
+                <div class="mchips" id="cf-ma"><button type="button" class="mchip" data-slot="cf-ma" data-n="1" onclick="toggleChip(this)">1 - Isidoro</button><button type="button" class="mchip" data-slot="cf-ma" data-n="2" onclick="toggleChip(this)">2 - Ramos</button><button type="button" class="mchip" data-slot="cf-ma" data-n="3" onclick="toggleChip(this)">3 - Petronio</button><button type="button" class="mchip" data-slot="cf-ma" data-n="4" onclick="toggleChip(this)">4 - Tavella</button><button type="button" class="mchip" data-slot="cf-ma" data-n="5" onclick="toggleChip(this)">5 - Patiño F.</button><button type="button" class="mchip" data-slot="cf-ma" data-n="6" onclick="toggleChip(this)">6 - Contreras</button><button type="button" class="mchip" data-slot="cf-ma" data-n="7" onclick="toggleChip(this)">7 - Pajón</button><button type="button" class="mchip" data-slot="cf-ma" data-n="8" onclick="toggleChip(this)">8 - Manuel N.</button><button type="button" class="mchip" data-slot="cf-ma" data-n="9" onclick="toggleChip(this)">9 - Fernandez</button><button type="button" class="mchip" data-slot="cf-ma" data-n="10" onclick="toggleChip(this)">10 - Romero</button><button type="button" class="mchip" data-slot="cf-ma" data-n="11" onclick="toggleChip(this)">11 - Garcia</button><button type="button" class="mchip" data-slot="cf-ma" data-n="12" onclick="toggleChip(this)">12 - Arrieta</button><button type="button" class="mchip" data-slot="cf-ma" data-n="13" onclick="toggleChip(this)">13 - Oliva</button><button type="button" class="mchip" data-slot="cf-ma" data-n="14" onclick="toggleChip(this)">14 - Lopardo</button><button type="button" class="mchip" data-slot="cf-ma" data-n="15" onclick="toggleChip(this)">15 - Banega N.</button><button type="button" class="mchip" data-slot="cf-ma" data-n="16" onclick="toggleChip(this)">16 - Andrada</button><button type="button" class="mchip" data-slot="cf-ma" data-n="17" onclick="toggleChip(this)">17 - Patiño T.</button><button type="button" class="mchip" data-slot="cf-ma" data-n="18" onclick="toggleChip(this)">18 - Leonardi</button></div>
               </div>
-              <div class="srow"><div class="slbl">Se quedan arriba 1</div><select class="ssel" id="cf-a1"></select></div>
-              <div class="srow"><div class="slbl">Se quedan arriba 2</div><select class="ssel" id="cf-a2"></select></div>
+              <div class="srow-multi"><div class="slbl-multi">Se quedan arriba</div><div class="mchips" id="cf-a1"><button type="button" class="mchip" data-slot="cf-a1" data-n="1" onclick="toggleChip(this)">1 - Isidoro</button><button type="button" class="mchip" data-slot="cf-a1" data-n="2" onclick="toggleChip(this)">2 - Ramos</button><button type="button" class="mchip" data-slot="cf-a1" data-n="3" onclick="toggleChip(this)">3 - Petronio</button><button type="button" class="mchip" data-slot="cf-a1" data-n="4" onclick="toggleChip(this)">4 - Tavella</button><button type="button" class="mchip" data-slot="cf-a1" data-n="5" onclick="toggleChip(this)">5 - Patiño F.</button><button type="button" class="mchip" data-slot="cf-a1" data-n="6" onclick="toggleChip(this)">6 - Contreras</button><button type="button" class="mchip" data-slot="cf-a1" data-n="7" onclick="toggleChip(this)">7 - Pajón</button><button type="button" class="mchip" data-slot="cf-a1" data-n="8" onclick="toggleChip(this)">8 - Manuel N.</button><button type="button" class="mchip" data-slot="cf-a1" data-n="9" onclick="toggleChip(this)">9 - Fernandez</button><button type="button" class="mchip" data-slot="cf-a1" data-n="10" onclick="toggleChip(this)">10 - Romero</button><button type="button" class="mchip" data-slot="cf-a1" data-n="11" onclick="toggleChip(this)">11 - Garcia</button><button type="button" class="mchip" data-slot="cf-a1" data-n="12" onclick="toggleChip(this)">12 - Arrieta</button><button type="button" class="mchip" data-slot="cf-a1" data-n="13" onclick="toggleChip(this)">13 - Oliva</button><button type="button" class="mchip" data-slot="cf-a1" data-n="14" onclick="toggleChip(this)">14 - Lopardo</button><button type="button" class="mchip" data-slot="cf-a1" data-n="15" onclick="toggleChip(this)">15 - Banega N.</button><button type="button" class="mchip" data-slot="cf-a1" data-n="16" onclick="toggleChip(this)">16 - Andrada</button><button type="button" class="mchip" data-slot="cf-a1" data-n="17" onclick="toggleChip(this)">17 - Patiño T.</button><button type="button" class="mchip" data-slot="cf-a1" data-n="18" onclick="toggleChip(this)">18 - Leonardi</button></div></div>
+              
               <div class="zona-row">
                 <div class="ztag">Zona</div>
                 <input class="zinp" id="z1" placeholder="#" maxlength="3">
@@ -394,21 +398,22 @@ select.fi{cursor:pointer}
             </div>
             <div class="sub">
               <div class="stitle">Tiro Libre</div>
-              <div class="srow-multi">
-                <div class="slbl-multi">Marcan</div>
-                <div class="mchips" id="cl-ma"></div>
+              <div style="margin-bottom:8px">
+                <div class="slbl-multi" style="margin-bottom:6px">Registrar situacion</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+                  <button type="button" class="ibtn" style="padding:6px 10px;font-size:11px;border-color:var(--red);color:var(--red)" onclick="regTL('Gol en contra')">Gol</button>
+                  <button type="button" class="ibtn" style="padding:6px 10px;font-size:11px" onclick="regTL('Remate al arco')">Remate</button>
+                  <button type="button" class="ibtn" style="padding:6px 10px;font-size:11px" onclick="regTL('Despeje')">Despeje</button>
+                  <button type="button" class="ibtn" style="padding:6px 10px;font-size:11px" onclick="regTL('Fuera')">Fuera</button>
+                  <button type="button" class="ibtn" style="padding:6px 10px;font-size:11px" onclick="regTL('Atajada')">Atajada</button>
+                </div>
+                <div class="slbl-multi" style="margin-bottom:4px">Jugador de barrera / defensa</div>
+                <select class="ssel" id="cl-barrera-sel" style="width:100%;margin-bottom:8px"></select>
+                <button type="button" class="ibtn gold" style="width:100%;padding:7px;font-size:11px" onclick="addTLEvento()">+ Agregar</button>
               </div>
-              <div class="srow-multi">
-                <div class="slbl-multi">Barrera</div>
-                <div class="mchips" id="cl-ba"></div>
-              </div>
-              <div class="srow-multi">
-                <div class="slbl-multi">Se quedan arriba</div>
-                <div class="mchips" id="cl-ar"></div>
-              </div>
+              <div id="tl-contra-lista" style="max-height:150px;overflow-y:auto"></div>
+              <button type="button" class="ibtn" style="font-size:10px;padding:3px 8px;margin-top:6px;color:var(--mut)" onclick="clearTLEventos()">Limpiar</button>
             </div>
-          </div>
-        </div>
       </div>
     </div>
     <div class="tab-pane" id="tab-cancha">
@@ -695,7 +700,7 @@ var TIT=[{n:1,v:'Isidoro'},{n:2,v:'Ramos'},{n:3,v:'Petronio'},{n:4,v:'Tavella'},
 var SUP=[{n:12,v:'Arrieta'},{n:13,v:'Oliva'},{n:14,v:'Lopardo'},{n:15,v:'Banega N.'},{n:16,v:'Andrada'},{n:17,v:'Patiño T.'},{n:18,v:'Leonardi'}];
 var TODOS=TIT.concat(SUP);
 var SEL_IDS=['ff-pd','ff-pi','fl-pi','fl-pd'];
-var MULTI_IDS=['ff-va','ff-ca','ff-de','fl-at','fl-de','cf-ma','cf-a1','cf-a2','cl-ma','cl-ba','cl-ar'];
+var MULTI_IDS=['ff-va','ff-ca','ff-de','fl-at','fl-de','cf-ma','cf-a1','cl-ma','cl-ba','cl-ar'];
 var filtro=new Set();
 function initApp(){
   // Usar plantel hardcodeado inmediatamente como fallback
@@ -727,54 +732,87 @@ function selAll(){filtro=new Set(TODOS.map(function(j){return j.n;}));syncGrid()
 function selTit(){filtro=new Set(TIT.map(function(j){return j.n;}));syncGrid();fillSelects();renderPines();}
 function selNone(){filtro.clear();syncGrid();fillSelects();renderPines();}
 function fillSelects(){
-  var lista=filtro.size>0?TODOS.filter(function(j){return filtro.has(j.n);}):TODOS;
+  var lista = filtro.size > 0 ? TODOS.filter(function(j){ return filtro.has(j.n); }) : TODOS;
+  // Selects simples (patea)
   SEL_IDS.forEach(function(id){
-    var s=document.getElementById(id);if(!s)return;
-    var prev=s.value;
-    s.innerHTML='<option value="">-</option>';
-    lista.forEach(function(j){var o=document.createElement('option');o.value=j.n;o.textContent=j.n+' - '+j.v;s.appendChild(o);});
-    if(prev&&lista.find(function(j){return String(j.n)===prev;}))s.value=prev;
-  });
-  MULTI_IDS.forEach(function(id){
-    var cont=document.getElementById(id);if(!cont)return;
-    var prevSel=getMultiSel(id);
-    // Remover listener anterior para evitar duplicados
-    var newCont=cont.cloneNode(false);
-    cont.parentNode.replaceChild(newCont,cont);
-    cont=newCont;
+    var s = document.getElementById(id); if(!s) return;
+    var prev = s.value;
+    s.innerHTML = '<option value="">-</option>';
     lista.forEach(function(j){
-      var btn=document.createElement('button');
-      btn.type='button';
-      btn.className='mchip'+(prevSel.indexOf(j.n)>=0?' on':'');
-      btn.textContent=j.n+' - '+j.v;
-      btn.setAttribute('data-n',String(j.n));
-      cont.appendChild(btn);
+      var o = document.createElement('option');
+      o.value = j.n; o.textContent = j.n + ' - ' + j.v;
+      s.appendChild(o);
     });
-    // Event delegation en el contenedor — más robusto en mobile
-    cont.addEventListener('click',function(e){
-      var t=e.target;
-      if(t.classList.contains('mchip')){
-        t.classList.toggle('on');
-      }
-    });
-    cont.addEventListener('touchend',function(e){
-      var t=e.target;
-      if(t.classList.contains('mchip')){
-        e.preventDefault();
-        t.classList.toggle('on');
-      }
-    });
+    if(prev && lista.find(function(j){ return String(j.n) === prev; })) s.value = prev;
+  });
+  // Select de barrera TL contra
+  var bsel = document.getElementById('cl-barrera-sel');
+  if(bsel){
+    var prev2 = bsel.value;
+    bsel.innerHTML = '<option value="">- Jugador -</option>';
+    lista.forEach(function(j){ var o=document.createElement('option');o.value=j.n;o.textContent=j.n+' - '+j.v;bsel.appendChild(o); });
+    if(prev2) bsel.value = prev2;
+  }
+  // Chips: mostrar solo jugadores del filtro, ocultar el resto
+  var listaNums = lista.map(function(j){ return j.n; });
+  document.querySelectorAll('.mchip').forEach(function(btn){
+    var n = parseInt(btn.getAttribute('data-n'));
+    if(filtro.size === 0 || listaNums.indexOf(n) >= 0){
+      btn.style.display = 'inline-flex';
+    } else {
+      btn.style.display = 'none';
+      btn.classList.remove('on'); // deseleccionar si se oculta
+    }
   });
 }
+
+/* ─── TIRO LIBRE CONTRA ─── */
+var tlEventos = [];
+var tlTipoSel = '';
+
+function regTL(tipo){
+  // Highlight el botón seleccionado
+  document.querySelectorAll('.tl-tipo-btn').forEach(function(b){ b.classList.remove('active'); });
+  tlTipoSel = tipo;
+}
+
+function addTLEvento(){
+  var tipo = tlTipoSel || 'Sin tipo';
+  var sel = document.getElementById('cl-barrera-sel');
+  var jugNombre = sel && sel.value ? sel.options[sel.selectedIndex].text : '';
+  var ev = { tipo: tipo, jug: jugNombre };
+  tlEventos.push(ev);
+  tlTipoSel = '';
+  renderTLEventos();
+}
+
+function renderTLEventos(){
+  var lista = document.getElementById('tl-contra-lista');
+  if(!lista) return;
+  if(!tlEventos.length){
+    lista.innerHTML = '<p style="color:var(--mut);font-size:11px;text-align:center;padding:4px">Sin situaciones</p>';
+    return;
+  }
+  lista.innerHTML = tlEventos.map(function(e, i){
+    return '<div class="tl-contra-item">' +
+      '<span class="tl-tipo">' + e.tipo + '</span>' +
+      '<span class="tl-jug">' + (e.jug || '') + '</span>' +
+      '<button onclick="tlEventos.splice('+i+',1);renderTLEventos()">x</button>' +
+    '</div>';
+  }).join('');
+}
+
+function clearTLEventos(){
+  tlEventos = [];
+  renderTLEventos();
+}
+
+function toggleChip(el){el.classList.toggle('on');}
+function toggleChip(el){el.classList.toggle('on');}
 function getMultiSel(id){
-  var cont=document.getElementById(id);
-  // buscar por id o por el cloneNode que pudo reemplazarlo
-  if(!cont) cont=document.querySelector('[id="'+id+'"]');
-  if(!cont)return[];
-  var result=[];
-  cont.querySelectorAll('.mchip.on').forEach(function(c){
-    var n=parseInt(c.getAttribute('data-n'));
-    if(!isNaN(n))result.push(n);
+  var result = [];
+  document.querySelectorAll('.mchip[data-slot="'+id+'"].on').forEach(function(c){
+    result.push(parseInt(c.getAttribute('data-n')));
   });
   return result;
 }
@@ -901,7 +939,7 @@ function mostrarResumenPP(){
   var form = getForm();
   var rows = '';
   var labelsS = {'ff-pd':'Patea corner (der)','ff-pi':'Patea corner (izq)','fl-pi':'Patea TL (izq)','fl-pd':'Patea TL (der)'};
-  var labelsM = {'ff-va':'Van al area (corner)','ff-ca':'Cabecea (corner)','ff-de':'Defienden (corner)','fl-at':'Atacan area (TL)','fl-de':'Defienden (TL)','cf-ma':'Marcan (corner)','cf-a1':'Quedan arriba 1','cf-a2':'Quedan arriba 2','cl-ma':'Marcan (TL)','cl-ba':'Barrera (TL)','cl-ar':'Quedan arriba (TL)'};
+  var labelsM = {'ff-va':'Van al area (corner)','ff-ca':'Cabecea (corner)','ff-de':'Defienden (corner)','fl-at':'Atacan area (TL)','fl-de':'Defienden (TL)','cf-ma':'Marcan (corner)','cf-a1':'Quedan arriba','cl-ma':'Marcan (TL)','cl-ba':'Barrera (TL)','cl-ar':'Quedan arriba (TL)'};
   Object.keys(labelsS).forEach(function(id){
     if(form.slots[id]){
       rows += '<tr><td style="padding:5px 8px;border-bottom:1px solid var(--brd);color:var(--mut);font-size:11px">'+labelsS[id]+'</td>'+

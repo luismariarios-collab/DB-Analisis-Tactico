@@ -228,6 +228,27 @@ select.fi{cursor:pointer}
 .tl-contra-item .tl-tipo{flex:1;color:var(--txt)}
 .tl-contra-item .tl-jug{color:var(--mut)}
 .tl-contra-item button{background:transparent;border:none;color:var(--mut2);cursor:pointer;font-size:13px;padding:0 2px}
+
+.cancha-flex{display:flex;gap:10px;align-items:flex-start}
+.cancha-flex-lista{min-width:100px;flex-shrink:0;padding-top:4px}
+.cancha-flex-main{flex:1;min-width:0}
+.cn-item{display:flex;gap:4px;align-items:center;margin-bottom:3px}
+.cn-num{width:18px;height:18px;border-radius:50%;background:var(--gold);color:#000;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cn-num.sup{background:var(--surf3);border:1px solid var(--brd2);color:var(--mut)}
+.cn-name{font-size:11px;color:var(--mut)}
+.media-canchas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.mc-label{font-size:9px;letter-spacing:1px;color:var(--mut);text-align:center;margin-bottom:4px;text-transform:uppercase}
+.mc-wrap{position:relative;border-radius:6px;overflow:hidden}
+.mc-wrap.drawing{cursor:crosshair}
+.mc-wrap.drawing .mc-draw{pointer-events:all}
+.mc-svg{width:100%;display:block;border-radius:6px}
+.mc-draw{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;border-radius:6px}
+.mc-btns{display:flex;gap:4px;margin-top:4px;justify-content:center}
+@media print{
+  .cancha-flex-lista .cn-num{background:#c9a84c!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .mc-btns,.cancha-actions{display:none!important}
+  .cancha-flex{display:flex!important}
+}
 </style>
 </head>
 <body>
@@ -421,6 +442,9 @@ select.fi{cursor:pointer}
     <div class="tab-pane" id="tab-cancha">
       <div class="cancha-wrap">
         <div class="clabel">Cancha - arrastra los jugadores</div>
+        <div class="cancha-flex">
+          <div class="cancha-flex-lista" id="cancha-lista"></div>
+          <div class="cancha-flex-main">
         <div class="cancha-container" id="cancha-container">
           <svg class="cancha-svg" viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg">
             <rect width="500" height="340" fill="#2d6a2d"/>
@@ -447,6 +471,8 @@ select.fi{cursor:pointer}
           <div id="pines-container"></div>
           <svg id="draw-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:8;border-radius:8px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
         </div>
+          </div><!-- /cancha-flex-main -->
+        </div><!-- /cancha-flex -->
         <div class="cancha-legend">
           <div class="cleg"><div class="cleg-dot"></div> Titular</div>
           <div class="cleg"><div class="cleg-dot sup"></div> Suplente</div>
@@ -461,6 +487,65 @@ select.fi{cursor:pointer}
         </div>
       </div>
     </div>
+
+      <div style="margin-top:.85rem">
+        <div class="clabel">Diagramas de jugadas</div>
+        <div class="media-canchas">
+          <div>
+            <div class="mc-label">corner</div>
+            <div class="mc-wrap" id="mc-wrap-corner">
+              <svg class="mc-svg" viewBox="0 0 250 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="250" height="200" fill="#2d6a2d"/>
+                <rect x="0" y="0" width="250" height="25" fill="#2d7a2d" opacity=".35"/>
+                <rect x="0" y="50" width="250" height="25" fill="#2d7a2d" opacity=".35"/>
+                <rect x="0" y="100" width="250" height="25" fill="#2d7a2d" opacity=".35"/>
+                <rect x="0" y="150" width="250" height="25" fill="#2d7a2d" opacity=".35"/>
+                <rect x="5" y="5" width="240" height="190" fill="none" stroke="white" stroke-width="2"/>
+                <rect x="185" y="50" width="60" height="100" fill="none" stroke="white" stroke-width="1.5"/>
+                <rect x="215" y="72" width="30" height="56" fill="none" stroke="white" stroke-width="1.5"/>
+                <rect x="245" y="83" width="5" height="34" fill="none" stroke="white" stroke-width="2"/>
+                <circle cx="195" cy="100" r="2" fill="white"/>
+                <path d="M 185,68 A 38,38 0 0,1 185,132" fill="none" stroke="white" stroke-width="1.5"/>
+                <circle cx="5" cy="5" r="3" fill="#e8c96a"/>
+                <circle cx="5" cy="195" r="3" fill="#e8c96a"/>
+                <line x1="5" y1="100" x2="180" y2="100" stroke="white" stroke-width="1" stroke-dasharray="5,4" opacity=".5"/>
+              </svg>
+              <svg class="mc-draw" id="mc-draw-corner" viewBox="0 0 250 200" preserveAspectRatio="none"></svg>
+            </div>
+            <div class="mc-btns">
+              <button class="ibtn" style="padding:4px 8px;font-size:10px" onclick="toggleDrawMC('corner')">&#9998; Dibujar</button>
+              <button class="ibtn" style="padding:4px 8px;font-size:10px;color:var(--red)" onclick="clearDrawMC('corner')">Borrar</button>
+            </div>
+          </div>
+          <div>
+            <div class="mc-label">tiro-libre</div>
+            <div class="mc-wrap" id="mc-wrap-tiro-libre">
+              <svg class="mc-svg" viewBox="0 0 250 200" xmlns="http://www.w3.org/2000/svg">
+                <rect width="250" height="200" fill="#2d6a2d"/>
+                <rect x="0" y="0" width="250" height="25" fill="#2d7a2d" opacity=".35"/>
+                <rect x="0" y="50" width="250" height="25" fill="#2d7a2d" opacity=".35"/>
+                <rect x="0" y="100" width="250" height="25" fill="#2d7a2d" opacity=".35"/>
+                <rect x="0" y="150" width="250" height="25" fill="#2d7a2d" opacity=".35"/>
+                <rect x="5" y="5" width="240" height="190" fill="none" stroke="white" stroke-width="2"/>
+                <rect x="185" y="50" width="60" height="100" fill="none" stroke="white" stroke-width="1.5"/>
+                <rect x="215" y="72" width="30" height="56" fill="none" stroke="white" stroke-width="1.5"/>
+                <rect x="245" y="83" width="5" height="34" fill="none" stroke="white" stroke-width="2"/>
+                <circle cx="195" cy="100" r="2" fill="white"/>
+                <path d="M 185,68 A 38,38 0 0,1 185,132" fill="none" stroke="white" stroke-width="1.5"/>
+                <circle cx="5" cy="5" r="3" fill="#e8c96a"/>
+                <circle cx="5" cy="195" r="3" fill="#e8c96a"/>
+                <line x1="5" y1="100" x2="180" y2="100" stroke="white" stroke-width="1" stroke-dasharray="5,4" opacity=".5"/>
+              </svg>
+              <svg class="mc-draw" id="mc-draw-tiro-libre" viewBox="0 0 250 200" preserveAspectRatio="none"></svg>
+            </div>
+            <div class="mc-btns">
+              <button class="ibtn" style="padding:4px 8px;font-size:10px" onclick="toggleDrawMC('tiro-libre')">&#9998; Dibujar</button>
+              <button class="ibtn" style="padding:4px 8px;font-size:10px;color:var(--red)" onclick="clearDrawMC('tiro-libre')">Borrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <div class="tab-pane" id="tab-stats">
       <div class="card">
         <div class="clabel">Resumen del Partido</div>
@@ -715,6 +800,7 @@ function initApp(){
   buildGrid();
   selTit();
   initCancha();
+  renderCanchaLista();
   // Luego actualizar desde Supabase en background
   cargarPlantel();
 }
@@ -728,11 +814,11 @@ function buildGrid(){
     g.appendChild(c);
   });
 }
-function toggleJ(n){if(filtro.has(n))filtro.delete(n);else filtro.add(n);syncGrid();fillSelects();renderPines();}
+function toggleJ(n){if(filtro.has(n))filtro.delete(n);else filtro.add(n);syncGrid();fillSelects();renderPines();renderCanchaLista();}
 function syncGrid(){TODOS.forEach(function(j){var c=document.getElementById('cj'+j.n);if(c)c.classList.toggle('on',filtro.has(j.n));});}
-function selAll(){filtro=new Set(TODOS.map(function(j){return j.n;}));syncGrid();fillSelects();renderPines();}
-function selTit(){filtro=new Set(TIT.map(function(j){return j.n;}));syncGrid();fillSelects();renderPines();}
-function selNone(){filtro.clear();syncGrid();fillSelects();renderPines();}
+function selAll(){filtro=new Set(TODOS.map(function(j){return j.n;}));syncGrid();fillSelects();renderPines();renderCanchaLista();}
+function selTit(){filtro=new Set(TIT.map(function(j){return j.n;}));syncGrid();fillSelects();renderPines();renderCanchaLista();}
+function selNone(){filtro.clear();syncGrid();fillSelects();renderPines();renderCanchaLista();}
 function fillSelects(){
   var lista = filtro.size > 0 ? TODOS.filter(function(j){ return filtro.has(j.n); }) : TODOS;
   // Selects simples (patea)
@@ -808,6 +894,68 @@ function clearTLEventos(){
   tlEventos = [];
   renderTLEventos();
 }
+
+
+function renderCanchaLista(){
+  var el = document.getElementById('cancha-lista');
+  if(!el) return;
+  var jug = filtro.size > 0 ? TODOS.filter(function(j){return filtro.has(j.n);}) : TIT;
+  el.innerHTML = jug.map(function(j){
+    return '<div class="cn-item"><div class="cn-num'+(j.n>11?' sup':'')+'">'+j.n+'</div><div class="cn-name">'+j.v+'</div></div>';
+  }).join('');
+}
+
+/* ─── MEDIAS CANCHAS ─── */
+var _mcActive={};var _mcPaths={};var _mcIsDrawing={};
+function toggleDrawMC(id){
+  _mcActive[id]=!_mcActive[id];
+  var w=document.getElementById('mc-wrap-'+id);
+  var s=document.getElementById('mc-draw-'+id);
+  if(_mcActive[id]){
+    if(w)w.classList.add('drawing');
+    if(s){s.style.pointerEvents='all';_setupMC(id,s);}
+  }else{
+    if(w)w.classList.remove('drawing');
+    if(s){s.style.pointerEvents='none';}
+  }
+}
+function clearDrawMC(id){
+  var s=document.getElementById('mc-draw-'+id);
+  if(s)while(s.firstChild)s.removeChild(s.firstChild);
+}
+function _setupMC(id,svg){
+  if(svg._ready)return;svg._ready=true;
+  svg.addEventListener('mousedown',function(e){_mcStart(e,id);});
+  svg.addEventListener('mousemove',function(e){_mcMove(e,id);});
+  svg.addEventListener('mouseup',function(e){_mcEnd(id);});
+  svg.addEventListener('touchstart',function(e){_mcStart(e,id);},{passive:false});
+  svg.addEventListener('touchmove',function(e){_mcMove(e,id);},{passive:false});
+  svg.addEventListener('touchend',function(e){_mcEnd(id);});
+}
+function _mcPt(e,svg){
+  var r=svg.getBoundingClientRect();
+  var s=e.touches?e.touches[0]:e;
+  return{x:((s.clientX-r.left)/r.width)*250,y:((s.clientY-r.top)/r.height)*200};
+}
+function _mcStart(e,id){
+  e.preventDefault();_mcIsDrawing[id]=true;
+  var svg=document.getElementById('mc-draw-'+id);
+  var pt=_mcPt(e,svg);
+  var p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('fill','none');p.setAttribute('stroke','#e8c96a');
+  p.setAttribute('stroke-width','2.5');p.setAttribute('stroke-linecap','round');
+  p.setAttribute('stroke-linejoin','round');
+  p.setAttribute('d','M '+pt.x+' '+pt.y);
+  svg.appendChild(p);_mcPaths[id]=p;
+}
+function _mcMove(e,id){
+  if(!_mcIsDrawing[id]||!_mcPaths[id])return;e.preventDefault();
+  var svg=document.getElementById('mc-draw-'+id);
+  var pt=_mcPt(e,svg);
+  var d=_mcPaths[id].getAttribute('d');
+  _mcPaths[id].setAttribute('d',d+' L '+pt.x+' '+pt.y);
+}
+function _mcEnd(id){_mcIsDrawing[id]=false;_mcPaths[id]=null;}
 
 function toggleChip(el){el.classList.toggle('on');}
 function toggleChip(el){el.classList.toggle('on');}

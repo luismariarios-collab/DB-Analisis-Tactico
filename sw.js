@@ -1,4 +1,4 @@
-const CACHE = 'db-analisis-v5';
+const CACHE = 'db-analisis-v6';
 const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png', '/escudo.jpg', '/cancha.jpg'];
 
 self.addEventListener('install', e => {

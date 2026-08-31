@@ -957,6 +957,36 @@ function _mcMove(e,id){
 }
 function _mcEnd(id){_mcIsDrawing[id]=false;_mcPaths[id]=null;}
 
+
+function regenerarChips(){
+  // Regenerar todos los chips con el plantel actualizado desde Supabase
+  var MULTI_IDS_LOCAL = ['ff-va','ff-ca','ff-de','fl-at','fl-de','cf-ma','cf-a1','cl-ma','cl-ba','cl-ar'];
+  MULTI_IDS_LOCAL.forEach(function(slotId){
+    var cont = document.getElementById(slotId);
+    if(!cont) return;
+    // Guardar selecciones actuales
+    var selNums = [];
+    cont.querySelectorAll('.mchip.on').forEach(function(b){
+      selNums.push(parseInt(b.getAttribute('data-n')));
+    });
+    // Reconstruir con jugadores actualizados
+    cont.innerHTML = '';
+    TODOS.forEach(function(j){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mchip' + (selNums.indexOf(j.n) >= 0 ? ' on' : '');
+      btn.setAttribute('data-slot', slotId);
+      btn.setAttribute('data-n', String(j.n));
+      btn.textContent = j.n + ' - ' + j.v;
+      btn.onclick = function(){ toggleChip(this); };
+      cont.appendChild(btn);
+    });
+  });
+  // También actualizar selects de barrera y los simples
+  fillSelects();
+  renderCanchaLista();
+}
+
 function toggleChip(el){el.classList.toggle('on');}
 function toggleChip(el){el.classList.toggle('on');}
 function getMultiSel(id){
@@ -1281,8 +1311,9 @@ function cargarPlantel(){
       filtro = new Set(TIT.map(function(j){ return j.n; }));
     }
     syncGrid();
-    fillSelects();
+    regenerarChips();
     renderPines();
+    renderCanchaLista();
   }).catch(function(e){ console.error('Error cargando plantel:', e); });
 }
 

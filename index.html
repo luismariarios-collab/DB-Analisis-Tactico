@@ -249,6 +249,63 @@ select.fi{cursor:pointer}
   .mc-btns,.cancha-actions{display:none!important}
   .cancha-flex{display:flex!important}
 }
+
+/* ── TEMA CLARO ── */
+body.light{
+  --bg:#f4f1eb;--surf:#ffffff;--surf2:#ede9df;--surf3:#e0dbd0;
+  --brd:#d0c9b8;--brd2:#b8b0a0;
+  --gold:#9a6e22;--gold2:#7a5010;--gold3:#5a3a08;--gold-dim:#c9a84c;
+  --txt:#1a1a1a;--mut:#666655;--mut2:#888877;
+  --grn:#1a7a3a;--red:#c0392b;--blu:#1a5fa0;--ora:#c07010;
+  background:#f4f1eb;color:#1a1a1a;
+}
+body.light .topbar{background:#fff;border-bottom:2px solid #c9a84c}
+body.light .card{background:#fff;border-color:#d0c9b8}
+body.light .seccion{background:#fff;border-color:#d0c9b8}
+body.light .sub{background:#ede9df;border-color:#d0c9b8}
+body.light .fi{background:#f4f1eb;border-color:#d0c9b8;color:#1a1a1a}
+body.light .ssel{background:#f4f1eb;border-color:#d0c9b8;color:#1a1a1a}
+body.light .zinp{background:#f4f1eb;border-color:#d0c9b8;color:#1a1a1a}
+body.light .mchip{background:#ede9df;border-color:#c0b898;color:#555}
+body.light .mchip.on{background:#c9a84c;border-color:#c9a84c;color:#fff;font-weight:700}
+body.light .chip{background:#ede9df;border-color:#c0b898;color:#555}
+body.light .chip.on{background:#c9a84c;border-color:#c9a84c;color:#fff;font-weight:700}
+body.light .ibtn{border-color:#c0b898;color:#666}
+body.light .ibtn.gold{background:#c9a84c;color:#fff;border-color:#c9a84c}
+body.light .ibtn.red{background:#c0392b;color:#fff}
+body.light .save-bar{background:#fff;border-top:2px solid #c9a84c}
+body.light .modal-card{background:#fff}
+body.light .modal-inp{background:#f4f1eb;border-color:#d0c9b8;color:#1a1a1a}
+body.light .modal-cancel{color:#666}
+body.light .cfg-section{background:#fff;border-color:#d0c9b8}
+body.light .cfg-inp{background:#f4f1eb;border-color:#d0c9b8;color:#1a1a1a}
+body.light .tabs-nav{background:#fff;border-bottom:1px solid #d0c9b8}
+body.light .tab-btn{color:#888}
+body.light .tab-btn.on{color:#7a5010;border-bottom-color:#c9a84c}
+body.light .sec-head:hover{background:#ede9df}
+body.light .cancha-wrap{background:#fff;border-color:#d0c9b8}
+body.light .crono-card{background:linear-gradient(135deg,#e8f5ee,#d0ead8);border-color:#1a7a3a}
+body.light .ev-btn{background:#f4f1eb;border-color:#c0b898}
+body.light .stat-box{background:#ede9df;border-color:#d0c9b8}
+body.light .hist-item{background:#fff;border-color:#d0c9b8}
+body.light .tl-item{border-bottom-color:#d0c9b8}
+body.light .plantel-row{border-bottom-color:#d0c9b8}
+body.light .user-btn{background:rgba(0,0,0,.04);border-color:#d0c9b8;color:#888}
+body.light .user-btn.sel{background:rgba(201,168,76,.15);border-color:#c9a84c;color:#7a5010}
+body.light .ubtn-tag{color:#888}
+body.light .user-btn.sel .ubtn-tag{color:#9a6e22}
+body.light .ubtn-label{color:#888}
+body.light .user-btn.sel .ubtn-label{color:#c9a84c}
+body.light .key{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.15);color:#333}
+body.light .bg-overlay{background:linear-gradient(160deg,rgba(240,235,220,.95) 0%,rgba(244,241,235,.92) 55%,rgba(240,235,220,.97) 100%)}
+body.light .lg-title{color:#7a5010}
+body.light .lg-sub{color:#888}
+body.light .lg-name{color:#1a1a1a}
+body.light .lg-hint{color:#888}
+body.light .dot{border-color:#c9a84c}
+body.light .dot.filled{background:#c9a84c;border-color:#c9a84c}
+body.light #cancha-lista .cn-name{color:#666}
+body.light .mc-wrap{border:1px solid #d0c9b8}
 </style>
 </head>
 <body>
@@ -304,6 +361,7 @@ select.fi{cursor:pointer}
       <div class="tb-sub">C.A.P. - Tecnico</div>
     </div>
     <div class="tb-right">
+      <button class="ibtn" id="btn-tema" onclick="toggleTema()" style="font-size:14px;padding:5px 10px">☀️</button>
       <button class="ibtn" onclick="showScreen('hist')">Historial</button>
       <button class="ibtn" onclick="showScreen('config')">Config</button>
       <button class="ibtn gold" onclick="genPDF()">PDF</button>
@@ -1516,7 +1574,25 @@ function drawEnd(e){
   }
 }
 
+
+/* ── TEMA CLARO/OSCURO ── */
+function toggleTema(){
+  var isLight = document.body.classList.toggle('light');
+  localStorage.setItem('db_tema', isLight ? 'light' : 'dark');
+  actualizarBtnTema();
+}
+function actualizarBtnTema(){
+  var btn = document.getElementById('btn-tema');
+  if(btn) btn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+}
+function cargarTema(){
+  var t = localStorage.getItem('db_tema');
+  if(t === 'light') document.body.classList.add('light');
+  actualizarBtnTema();
+}
+
 loadCfg();
+cargarTema();
 </script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}</script>
 </body>
